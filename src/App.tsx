@@ -3,7 +3,7 @@ import { Home } from './components/Home';
 import { Reference } from './components/Reference';
 import { Workspace } from './components/Workspace';
 import { LESSONS } from './lessons/lessons';
-import { useProgress } from './progress';
+import { loadSetting, useProgress } from './progress';
 
 function useHash() {
   const [hash, setHash] = useState(location.hash);
@@ -27,6 +27,9 @@ export function App() {
     : hash === '' || hash === '#' || hash === '#/' ? 'home'
     : 'not-found';
   const done = progress.completed.filter((id) => LESSONS.some((l) => l.id === id)).length;
+  // "Lessons" goes back to the lesson you were last in; the logo always goes to the overview.
+  const lastLesson = loadSetting<string | null>('lastLesson', null);
+  const lessonsHref = route !== 'home' && lastLesson && LESSONS.some((l) => l.id === lastLesson) ? `#/lesson/${lastLesson}` : '#/';
 
   useEffect(() => {
     document.title = lesson ? `${lesson.title} · Playwright Practice Lab` : route === 'sandbox' ? 'Sandbox · Playwright Practice Lab' : route === 'reference' ? 'Reference · Playwright Practice Lab' : route === 'not-found' ? 'Page not found · Playwright Practice Lab' : 'Playwright Practice Lab';
@@ -39,7 +42,7 @@ export function App() {
           <span aria-hidden="true">🎭</span> <span className="brand-text">Playwright Practice Lab</span>
         </a>
         <nav aria-label="Main">
-          <a href="#/" aria-current={route === 'home' || route === 'lesson' ? 'page' : undefined}>Lessons</a>
+          <a href={lessonsHref} aria-current={route === 'home' || route === 'lesson' ? 'page' : undefined}>Lessons</a>
           <a href="#/sandbox" aria-current={route === 'sandbox' ? 'page' : undefined}>Sandbox</a>
           <a href="#/reference" aria-current={route === 'reference' ? 'page' : undefined}>Reference</a>
         </nav>

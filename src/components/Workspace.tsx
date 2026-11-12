@@ -93,6 +93,8 @@ export function Workspace({ lesson }: { lesson: Lesson | null }) {
   // Show the app in the preview when a lesson opens.
   useEffect(() => {
     void runtime.open(setup, lesson?.startPath ?? 'index.html');
+    // The "Lessons" tab in the header returns to this lesson.
+    if (lesson) saveSetting('lastLesson', lesson.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -275,11 +277,12 @@ function LessonPanel({ lesson, checkState, onShowSolution, onCollapse }: { lesso
   return (
     <div className="lesson" ref={scrollRef}>
       <div className="lesson-top">
-        <span className="lesson-meta">
-          {lesson.chapter} · Lesson {index + 1} of {LESSONS.length}
-        </span>
+        <a className="back-link" href="#/">← All lessons</a>
         <button className="icon-button" onClick={onCollapse} title="Hide the lesson panel" aria-label="Hide the lesson panel">‹</button>
       </div>
+      <span className="lesson-meta">
+        {lesson.chapter} · Lesson {index + 1} of {LESSONS.length}
+      </span>
       <h1>
         {lesson.title} {done && <span className="done-badge" title="Completed">✓</span>}
       </h1>
@@ -295,7 +298,8 @@ function LessonPanel({ lesson, checkState, onShowSolution, onCollapse }: { lesso
             </li>
           ))}
         </ul>
-        {checkState?.complete && (
+        {/* Also shown when you come back to a lesson you already passed. */}
+        {(checkState ? checkState.complete : done && !runtime.running) && (
           <div className="success-card" role="status">
             <strong>{next ? 'Lesson complete' : 'Course complete'}</strong>
             <a className="next-button" href={next ? `#/lesson/${next.id}` : '#/'}>

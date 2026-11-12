@@ -109,7 +109,3 @@ Also add the lesson's official docs links to `LESSON_DOCS` in `src/lessons/docs.
 a "Practice" link in the matching section of `src/components/Reference.tsx`.
 
 Every lesson's solution should pass: open the lesson, click **Show solution**, then **Run**.
-
----
-
-Unofficial learning project, not affiliated with Microsoft or the Playwright team.

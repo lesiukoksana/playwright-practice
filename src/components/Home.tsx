@@ -74,7 +74,6 @@ export function Home() {
           what's supported and how to run your tests locally. Every lesson links to the matching page of the{' '}
           <a href="https://playwright.dev/docs/intro" target="_blank" rel="noreferrer">official Playwright documentation</a>.
         </p>
-        <p className="muted small">Unofficial learning project. Not affiliated with Microsoft or the Playwright team.</p>
       </section>
     </div>
   );
