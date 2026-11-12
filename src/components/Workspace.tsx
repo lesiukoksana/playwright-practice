@@ -191,9 +191,9 @@ export function Workspace({ lesson }: { lesson: Lesson | null }) {
       <section className="pane editor-pane" aria-label="Code editor">
         <div className="toolbar">
           {runtime.running ? (
-            <button className="run-button stop" onClick={() => runtime.stop()}>■ Stop</button>
+            <button className="run-button stop" onClick={() => runtime.stop()}><Icon name="stop" size={14} /> Stop</button>
           ) : (
-            <button className="run-button" onClick={run} title="Run (Ctrl+Enter)">▶ Run</button>
+            <button className="run-button" onClick={run} title="Run (Ctrl+Enter)"><Icon name="play" size={14} /> Run</button>
           )}
           <select className="small-select" aria-label="Speed" value={slowMo} onChange={(e) => setSlowMo(Number(e.target.value))}>
             {SLOW_MO.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
@@ -363,15 +363,13 @@ function LessonPanel({ lesson, checkState, onShowSolution, onCollapse }: { lesso
 
       <nav className="lesson-nav" aria-label="Lessons">
         {prev ? (
-          <a className="nav-card prev" href={`#/lesson/${prev.id}`}>
-            <span className="nav-label">← Previous</span>
-            <span className="nav-title">{prev.title}</span>
+          <a className="nav-link prev" href={`#/lesson/${prev.id}`} aria-label={`Previous lesson: ${prev.title}`}>
+            {'←\u00a0'}{prev.title}
           </a>
         ) : <span />}
         {next ? (
-          <a className="nav-card next" href={`#/lesson/${next.id}`}>
-            <span className="nav-label">Next →</span>
-            <span className="nav-title">{next.title}</span>
+          <a className="nav-link next" href={`#/lesson/${next.id}`} aria-label={`Next lesson: ${next.title}`}>
+            {next.title}{'\u00a0→'}
           </a>
         ) : <span />}
       </nav>

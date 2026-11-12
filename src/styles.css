@@ -118,21 +118,15 @@ body.resizing-horizontal, body.resizing-horizontal * { cursor: row-resize !impor
 .help-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.5rem; }
 .confirm-inline { display: inline-flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; font-size: 0.9rem; }
 .learn-more { margin-bottom: 1.25rem; }
-.learn-more h2 { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--blue); margin: 0 0 0.4rem; }
+.learn-more h2 { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 0.4rem; }
 .learn-more ul { list-style: none; margin: 0; padding: 0; font-size: 0.92rem; }
 .learn-more li { display: flex; justify-content: space-between; gap: 0.75rem; padding: 0.2rem 0; border-bottom: 1px solid #1f2533; }
 .learn-more a::after { content: ' ↗'; font-size: 0.8em; }
 .doc-source { color: var(--muted); font-size: 0.75rem; white-space: nowrap; }
-.lesson-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; border-top: 1px solid var(--border); padding-top: 0.9rem; }
-.nav-card {
-  display: flex; flex-direction: column; gap: 0.15rem; padding: 9px 12px; border-radius: 8px;
-  background: var(--panel-2); border: 1px solid var(--border); text-decoration: none; color: var(--text); min-width: 0;
-  transition: border-color 0.12s, background 0.12s;
-}
-.nav-card:hover { border-color: var(--blue); background: #1e2534; color: var(--text); }
-.nav-card.next { text-align: right; grid-column: 2; }
-.nav-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
-.nav-title { font-weight: 600; font-size: 0.9rem; line-height: 1.3; overflow-wrap: anywhere; }
+.lesson-nav { display: flex; justify-content: space-between; gap: 1rem; border-top: 1px solid var(--border); padding-top: 0.75rem; font-size: 0.88rem; }
+.nav-link { flex: 1 1 0; color: var(--blue); text-decoration: none; min-width: 0; }
+.nav-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.nav-link.next { text-align: right; }
 .check-row { display: flex; gap: 0.5rem; align-items: center; margin: 0.35rem 0; font-size: 0.92rem; }
 .field-row { display: flex; flex-direction: column; gap: 0.3rem; margin: 0.6rem 0; font-size: 0.92rem; }
 .bug-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 0.5rem; }
@@ -167,7 +161,8 @@ ul.plain li { padding: 0.15rem 0; }
 .small-select { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 4px 6px; font-size: 0.85rem; }
 .link-button { background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
 .run-button {
-  background: var(--accent); color: var(--accent-ink); font-weight: 700; border: 0; border-radius: 6px; padding: 5px 16px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  background: var(--accent); color: var(--accent-ink); font-weight: 700; border: 0; border-radius: 6px; padding: 5px 14px 5px 11px; cursor: pointer;
 }
 .run-button:hover { filter: brightness(1.08); }
 .run-button.stop { background: var(--red); color: #2b0606; }
@@ -319,3 +314,4 @@ ul.plain li { padding: 0.15rem 0; }
 .reference .md h2, .reference .md h3 { scroll-margin-top: 12px; }
 .reference .md h3 { font-size: 1rem; margin: 1.4rem 0 0.4rem; color: var(--text); }
 .example-confirm { margin: 0.6rem 0 0; }
+.hero .lead { max-width: 760px; }

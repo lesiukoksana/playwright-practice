@@ -6,7 +6,7 @@ interface Props {
 }
 
 const ICON: Record<string, string> = {
-  passed: '✓', failed: '✗', timedOut: '⏱', skipped: '–', interrupted: '■', running: '•',
+  passed: '✓', failed: '✗', timedOut: '✗', skipped: '–', interrupted: '■', running: '•',
 };
 
 function ms(n: number) {

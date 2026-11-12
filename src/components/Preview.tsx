@@ -238,7 +238,7 @@ function RecorderBar() {
             {m.label}
           </button>
         ))}
-        <button type="button" className="small-button" onClick={() => rec.stop()}>■ Stop</button>
+        <button type="button" className="small-button" onClick={() => rec.stop()}><Icon name="stop" size={12} /> Stop</button>
       </span>
     </div>
   );

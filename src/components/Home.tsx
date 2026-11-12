@@ -9,11 +9,8 @@ export function Home() {
   return (
     <div className="page home">
       <section className="hero">
-        <h1>Learn Playwright by writing real tests</h1>
-        <p className="lead">
-          Short lessons, an editor in your browser and a demo shop to test against. Write a test, press <strong>Run</strong>, and watch it
-          click through the app. Nothing to install.
-        </p>
+        <h1>Playwright Practice Lab</h1>
+        <p className="lead">Practise writing Playwright tests against a demo online shop, one short lesson at a time.</p>
         <div className="hero-actions">
           <a className="cta" href={`#/lesson/${nextLesson.id}`}>{done === 0 ? 'Start the course' : done === LESSONS.length ? 'Review the course' : `Continue: ${nextLesson.title}`} →</a>
           <a className="cta secondary" href="#/sandbox">Open the sandbox</a>
