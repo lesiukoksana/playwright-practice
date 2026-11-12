@@ -85,11 +85,14 @@ export function bindPasswordRules(input, listEl, meterEl) {
   update();
 }
 
-/** Wires a "Show password" toggle button. */
+/**
+ * Wires a "Show password" toggle button. Password fields are text inputs hidden with CSS
+ * (class "masked"), so browsers don't offer to save the shop's fake test passwords.
+ */
 export function bindPasswordToggle(button, input) {
   button.addEventListener('click', () => {
-    const show = input.type === 'password';
-    input.type = show ? 'text' : 'password';
+    const show = !input.classList.contains('revealed');
+    input.classList.toggle('revealed', show);
     button.setAttribute('aria-pressed', String(show));
     button.textContent = show ? 'Hide' : 'Show';
   });

@@ -388,3 +388,7 @@ ol.stepper li.done::before { content: "✓ "; }
   .wishlist-item { flex-wrap: wrap; }
   .datepicker { left: 0; right: auto; width: min(300px, calc(100vw - 32px)); }
 }
+
+/* Password fields: text inputs shown as dots, so browsers don't offer to save the fake test passwords. */
+input.masked { -webkit-text-security: disc; text-security: disc; }
+input.masked.revealed { -webkit-text-security: none; text-security: none; }

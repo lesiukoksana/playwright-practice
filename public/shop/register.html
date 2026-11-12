@@ -36,7 +36,7 @@
         <div class="field">
           <label for="password">Password</label>
           <div class="input-with-button">
-            <input id="password" type="password" autocomplete="new-password" aria-describedby="password-rules password-error" required>
+            <input id="password" type="text" class="masked" autocomplete="off" autocapitalize="off" spellcheck="false" data-1p-ignore data-lpignore="true" data-bwignore aria-describedby="password-rules password-error" required>
             <button type="button" id="toggle-password" class="btn btn-secondary btn-sm" aria-pressed="false" aria-controls="password">Show</button>
           </div>
           <div class="meter" id="password-meter" aria-live="polite"><div class="meter-track"><div class="meter-bar"></div></div><span class="meter-label"></span></div>
@@ -45,7 +45,7 @@
         </div>
         <div class="field">
           <label for="confirm-password">Confirm password</label>
-          <input id="confirm-password" type="password" autocomplete="new-password" aria-describedby="confirm-password-error" required>
+          <input id="confirm-password" type="text" class="masked" autocomplete="off" autocapitalize="off" spellcheck="false" data-1p-ignore data-lpignore="true" data-bwignore aria-describedby="confirm-password-error" required>
           <p class="error" id="confirm-password-error" hidden></p>
         </div>
         <div class="field">

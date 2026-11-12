@@ -34,6 +34,9 @@ use: { baseURL: 'https://<user>.github.io/<repo>/shop/' },
 
 You can also register new users. Use **Reset demo data** in the footer to restore everything.
 
+Password fields are text inputs that show dots (CSS `-webkit-text-security`), not `type="password"`, so browsers
+don't offer to save these fake passwords. Locate them by label: `page.getByLabel('Password')`.
+
 ## Pages
 
 | Page | What's there |
