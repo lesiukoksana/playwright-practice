@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Home } from './components/Home';
+import { Icon } from './components/Icon';
 import { Reference } from './components/Reference';
 import { Workspace } from './components/Workspace';
 import { LESSONS } from './lessons/lessons';
@@ -39,7 +40,7 @@ export function App() {
     <div className={`app route-${route}`}>
       <header className="app-header">
         <a className="brand" href="#/" aria-label="Playwright Practice Lab, home">
-          <span aria-hidden="true">🎭</span> <span className="brand-text">Playwright Practice Lab</span>
+          <span className="brand-logo"><Icon name="logo" size={20} /></span> <span className="brand-text">Playwright Practice Lab</span>
         </a>
         <nav aria-label="Main">
           <a href={lessonsHref} aria-current={route === 'home' || route === 'lesson' ? 'page' : undefined}>Lessons</a>

@@ -37,13 +37,14 @@ export function Home() {
             <div className="chapter" key={ch}>
               <h3><span className="chapter-num">{ci + 1}</span> {ch}</h3>
               <ol>
-                {LESSONS.filter((l) => l.chapter === ch).map((l) => {
+                {LESSONS.filter((l) => l.chapter === ch).map((l, li) => {
                   const complete = progress.completed.includes(l.id);
                   return (
                     <li key={l.id} className={complete ? 'complete' : ''}>
                       <a href={`#/lesson/${l.id}`}>
-                        <span className="lesson-check" aria-hidden="true">{complete ? '✓' : '○'}</span>
+                        <span className="lesson-num">{ci + 1}.{li + 1}</span>
                         {l.title}
+                        {complete && <span className="lesson-done" aria-hidden="true">✓</span>}
                         {complete && <span className="visually-hidden"> (completed)</span>}
                       </a>
                     </li>

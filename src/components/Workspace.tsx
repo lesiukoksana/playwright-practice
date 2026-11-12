@@ -6,6 +6,7 @@ import type { Lesson } from '../lessons/types';
 import { loadCode, loadSetting, markCompleted, saveCode, saveSetting, useProgress } from '../progress';
 import { CodeEditor, type EditorError, type EditorHandle } from './CodeEditor';
 import { ConfirmInline } from './ConfirmInline';
+import { Icon } from './Icon';
 import { Markdown } from './Markdown';
 import { OutputPanel } from './OutputPanel';
 import { Preview } from './Preview';
@@ -277,12 +278,15 @@ function LessonPanel({ lesson, checkState, onShowSolution, onCollapse }: { lesso
   return (
     <div className="lesson" ref={scrollRef}>
       <div className="lesson-top">
-        <a className="back-link" href="#/">← All lessons</a>
+        <nav className="breadcrumb" aria-label="Breadcrumb">
+          <a href="#/">Lessons</a>
+          <span aria-hidden="true">›</span>
+          <span>
+            {lesson.chapter} · {index + 1} of {LESSONS.length}
+          </span>
+        </nav>
         <button className="icon-button" onClick={onCollapse} title="Hide the lesson panel" aria-label="Hide the lesson panel">‹</button>
       </div>
-      <span className="lesson-meta">
-        {lesson.chapter} · Lesson {index + 1} of {LESSONS.length}
-      </span>
       <h1>
         {lesson.title} {done && <span className="done-badge" title="Completed">✓</span>}
       </h1>
@@ -325,7 +329,7 @@ function LessonPanel({ lesson, checkState, onShowSolution, onCollapse }: { lesso
         <div className="help-buttons">
           {hints < lesson.hints.length && (
             <button className="small-button" onClick={() => setHints(hints + 1)}>
-              💡 Show a hint ({hints + 1} of {lesson.hints.length})
+              <Icon name="hint" /> Show a hint ({hints + 1} of {lesson.hints.length})
             </button>
           )}
           {!confirmSolution ? (
@@ -342,7 +346,7 @@ function LessonPanel({ lesson, checkState, onShowSolution, onCollapse }: { lesso
 
       {LESSON_DOCS[lesson.id]?.length > 0 && (
         <section className="learn-more" aria-labelledby="learn-more-heading">
-          <h2 id="learn-more-heading">📖 Learn more</h2>
+          <h2 id="learn-more-heading"><Icon name="docs" /> Learn more</h2>
           <ul>
             {LESSON_DOCS[lesson.id].map((d) => (
               <li key={d.url}>

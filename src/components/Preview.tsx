@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react';
 import type { RecordSink, RecorderMode } from '../engine/recorder';
 import { runtime } from '../engine/runtime';
+import { Icon } from './Icon';
 import { loadSetting, saveSetting } from '../progress';
 
 const VIEWPORTS = [
@@ -46,7 +47,7 @@ export function Preview({ onInsertLocator, onReload, recorder }: Props) {
     let height = preset.height;
     if (!height) {
       const scale = Math.min(1, stage.width / preset.width);
-      height = Math.max(560, Math.min(1400, Math.round(stage.height / scale)));
+      height = Math.max(560, Math.min(3000, Math.round(stage.height / scale)));
     }
     if (runtime.viewport.width !== preset.width || Math.abs(runtime.viewport.height - height) > 16) {
       runtime.setViewport({ width: preset.width, height });
@@ -146,7 +147,7 @@ export function Preview({ onInsertLocator, onReload, recorder }: Props) {
             aria-pressed={runtime.pickerActive}
             title="Hover over an element in the page to get a locator for it, then click to keep it"
           >
-            🎯 Pick locator
+            <Icon name="target" /> Pick locator
           </button>
           <select
             aria-label="Viewport size"
@@ -200,7 +201,7 @@ export function Preview({ onInsertLocator, onReload, recorder }: Props) {
           </div>
         </div>
         <p className="preview-note">
-          {runtime.running ? 'Test running…' : 'You can click around the app yourself. Each test starts with fresh data.'}
+          {runtime.running ? 'Test running…' : 'Click around the app yourself. Tests start with fresh data.'}
           {scale < 1 && ` Shown at ${Math.round(scale * 100)}%.`}
         </p>
       </div>

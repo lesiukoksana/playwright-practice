@@ -100,7 +100,7 @@ A locator doesn't search right away. It describes *how* to find the element, and
 await expect(page.getByRole('heading', { name: 'Shop all products' })).toBeVisible();
 \`\`\`
 
-> 💡 **Tip:** click **🎯 Pick locator** above the browser and hover over any element to see a suggested locator.
+> **Tip:** click **Pick locator** above the browser and hover over any element to see a suggested locator.
 `,
     task: `On the home page, check that:
 1. the heading **Shop all products** is visible, and
@@ -1121,8 +1121,8 @@ The catalog shows an alert with a **Try again** button when products fail to loa
     intro: `
 Tests exist to catch **regressions**, bugs that sneak in when code changes. In this chapter your test must:
 
-1. ✅ **pass** on the correct shop, and
-2. ❌ **fail** when we secretly switch on a bug.
+1. **pass** on the correct shop, and
+2. **fail** when we secretly switch on a bug.
 
 The business rule:
 

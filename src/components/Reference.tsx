@@ -2,19 +2,20 @@ import { useEffect, useRef, useState } from 'react';
 import { runtime } from '../engine/runtime';
 import { DOCS as D, type DocLink } from '../lessons/docs';
 import { LESSONS } from '../lessons/lessons';
+import { iconHtml } from './Icon';
 import { Markdown } from './Markdown';
 
 // Titles are escaped: "MDN: the <title> element" would otherwise be read as an HTML tag.
 const link = (d: DocLink) => `[${d.title.replace(/</g, '&lt;')}](${d.url})`;
-const links = (...ds: DocLink[]) => `📖 ${ds.map(link).join(' · ')}`;
+const links = (...ds: DocLink[]) => `<span class="md-label">${iconHtml('docs')} Docs:</span> ${ds.map(link).join(' · ')}`;
 
-/** Links to the lessons that teach a topic, e.g. "🧪 Practice: [Strict mode](#/lesson/strict-mode)". */
+/** Links to the lessons that teach a topic, e.g. "Practice: [Strict mode](#/lesson/strict-mode)". */
 const lessonLink = (id: string) => {
   const lesson = LESSONS.find((l) => l.id === id);
   if (!lesson) throw new Error(`Reference links to unknown lesson "${id}"`);
   return `[${lesson.title}](#/lesson/${id})`;
 };
-const practice = (...ids: string[]) => `🧪 Practice: ${ids.map(lessonLink).join(' · ')}`;
+const practice = (...ids: string[]) => `<span class="md-label">${iconHtml('practice')} Practice:</span> ${ids.map(lessonLink).join(' · ')}`;
 
 /** Section ids come from the heading text, so the table of contents never goes out of date. */
 const slug = (text: string) =>
@@ -70,7 +71,7 @@ page.getByTestId('product-card')
 \`\`\`
 
 Avoid long CSS paths (\`div > div:nth-child(3) > button\`), XPath, auto-generated class names, and text that changes
-on its own, such as prices or dates. Not sure what to use? Click **🎯 Pick locator** above the browser and hover over the element.
+on its own, such as prices or dates. Not sure what to use? Click **Pick locator** above the browser and hover over the element.
 
 ## Actions
 
@@ -124,8 +125,8 @@ ${links(D.codegenIntro, D.recording)}
 
 ${practice('record-a-test')}
 
-- **⏺ Record** (above the browser) writes code while you use the app: clicks, typing, checkboxes, dropdowns, Enter and file choices. Use **Assert visible / text / value** and then click an element to add an assertion. Code goes in at the editor's cursor, or at the end of the last test.
-- **🎯 Pick locator** shows the locator for whatever you hover over. Click to keep it, then **Copy** it or **Insert** it into your code.
+- **Record** (above the browser) writes code while you use the app: clicks, typing, checkboxes, dropdowns, Enter and file choices. Use **Assert visible / text / value** and then click an element to add an assertion. Code goes in at the editor's cursor, or at the end of the last test.
+- **Pick locator** shows the locator for whatever you hover over. Click to keep it, then **Copy** it or **Insert** it into your code.
 - Both prefer roles and labels, and use \`filter({ hasText })\` to tell repeated elements apart. Real Playwright does the same with \`npx playwright codegen\`.
 
 ## Common errors
@@ -151,7 +152,7 @@ says why.
 
 | Last line of the call log | What it means | Fix |
 |---|---|---|
-| \`waiting for getBy…\` (nothing else) | Nothing on the page matches the locator | Check the spelling, role and name with **🎯 Pick locator**. Check you're on the page you think you are. If the element is inside an iframe, use \`frameLocator()\` |
+| \`waiting for getBy…\` (nothing else) | Nothing on the page matches the locator | Check the spelling, role and name with **Pick locator**. Check you're on the page you think you are. If the element is inside an iframe, use \`frameLocator()\` |
 | \`element is not visible\` | It exists but is hidden, for example in a closed menu | Open the menu (\`hover()\` or \`click()\`) first |
 | \`element is not enabled\` | The button is disabled | Do what enables it first, such as filling in required fields |
 | \`… intercepts pointer events\` | Something covers it: a pop-up, banner or overlay | Close it first, or register \`page.addLocatorHandler()\` |

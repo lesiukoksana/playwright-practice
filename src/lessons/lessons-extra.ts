@@ -11,7 +11,7 @@ export const EXTRA_LESSONS: Lesson[] = [
     title: 'Record a test',
     startPath: 'index.html',
     intro: `
-Writing every locator by hand is slow. Playwright has a **test generator** (\`npx playwright codegen\`) that watches you use the app and writes the code. This lab has one too: the **⏺ Record** button above the browser.
+Writing every locator by hand is slow. Playwright has a **test generator** (\`npx playwright codegen\`) that watches you use the app and writes the code. This lab has one too: the **Record** button above the browser.
 
 1. Put the cursor in the editor where the code should go (or don't, and it goes at the end of the test).
 2. Click **Record** and use the app: click, type, choose options.
@@ -27,7 +27,7 @@ The recorder picks locators the way you've learned: roles, labels, and \`filter(
 Then look at the recorded locator for the button. Why does it need \`filter()\`?`,
     starter: `${IMPORT}test('adds the speaker to the cart', async ({ page }) => {
   await page.goto('index.html');
-  // Click ⏺ Record above the browser and use the app.
+  // Click Record above the browser and use the app.
   // Your actions will appear here.
 });
 `,
