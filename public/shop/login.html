@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in | PracticeShop</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/test-hooks.js"></script>
+  <script type="module" src="js/pages/login.js"></script>
+</head>
+<body>
+  <div id="app-header"></div>
+  <main id="main" class="container narrow">
+    <div class="card">
+      <h1>Log in</h1>
+      <div id="login-error" class="alert alert-error" role="alert" data-testid="login-error" hidden></div>
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="username" aria-describedby="email-error" required>
+          <p class="error" id="email-error" hidden></p>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-with-button">
+            <input id="password" name="password" type="password" autocomplete="current-password" aria-describedby="password-error" required>
+            <button type="button" id="toggle-password" class="btn btn-secondary btn-sm" aria-pressed="false" aria-controls="password">Show</button>
+          </div>
+          <p class="error" id="password-error" hidden></p>
+        </div>
+        <div class="field checkbox">
+          <input id="remember" name="remember" type="checkbox">
+          <label for="remember">Remember me for 30 days</label>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="login-button">Log in</button>
+      </form>
+      <p class="muted center">No account yet? <a href="register.html">Create one</a></p>
+
+      <details class="test-accounts">
+        <summary>Show test accounts</summary>
+        <table>
+          <thead><tr><th scope="col">Email</th><th scope="col">Password</th><th scope="col">Behaviour</th></tr></thead>
+          <tbody>
+            <tr><td>standard@shop.test</td><td>Password123!</td><td>Regular customer with order history</td></tr>
+            <tr><td>admin@shop.test</td><td>Admin123!</td><td>Can open the Admin page</td></tr>
+            <tr><td>locked@shop.test</td><td>Password123!</td><td>Account is locked</td></tr>
+            <tr><td>slow@shop.test</td><td>Password123!</td><td>Login takes 7 seconds</td></tr>
+          </tbody>
+        </table>
+      </details>
+    </div>
+  </main>
+  <div id="app-footer"></div>
+</body>
+</html>

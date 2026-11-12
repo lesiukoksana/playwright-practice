@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin | PracticeShop</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/test-hooks.js"></script>
+  <script type="module" src="js/pages/admin.js"></script>
+</head>
+<body>
+  <div id="app-header"></div>
+  <main id="main" class="container">
+    <div id="admin-root"></div>
+  </main>
+  <div id="app-footer"></div>
+
+  <dialog id="product-dialog" class="modal" aria-labelledby="product-dialog-title">
+    <form id="product-form" class="modal-body" novalidate>
+      <h2 id="product-dialog-title">Add product</h2>
+      <div class="field">
+        <label for="p-name">Name</label>
+        <input id="p-name" maxlength="60" aria-describedby="p-name-error">
+        <p class="error" id="p-name-error" hidden></p>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="p-category">Category</label>
+          <select id="p-category" aria-describedby="p-category-error">
+            <option value="">Select a category</option>
+          </select>
+          <p class="error" id="p-category-error" hidden></p>
+        </div>
+        <div class="field">
+          <label for="p-emoji">Icon <span class="muted">(emoji, optional)</span></label>
+          <input id="p-emoji" maxlength="4">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="p-price">Price (USD)</label>
+          <input id="p-price" inputmode="decimal" aria-describedby="p-price-error">
+          <p class="error" id="p-price-error" hidden></p>
+        </div>
+        <div class="field">
+          <label for="p-stock">Stock</label>
+          <input id="p-stock" type="number" min="0" step="1" aria-describedby="p-stock-error">
+          <p class="error" id="p-stock-error" hidden></p>
+        </div>
+      </div>
+      <div class="field">
+        <label for="p-description">Description <span class="muted">(optional)</span></label>
+        <textarea id="p-description" rows="3" maxlength="300"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" data-action="cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="save-product">Save product</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>

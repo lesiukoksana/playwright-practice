@@ -1,0 +1,197 @@
+[
+  {
+    "id": 1, "name": "Wireless Headphones", "category": "Electronics", "price": 89.99, "stock": 15, "rating": 4.5,
+    "emoji": "🎧", "color": "#e0e7ff",
+    "description": "Over-ear wireless headphones with active noise cancelling and 30-hour battery life.",
+    "specs": { "Brand": "Soundly", "Battery": "30 hours", "Connectivity": "Bluetooth 5.3", "Weight": "250 g" },
+    "reviews": [
+      { "author": "Maria K.", "rating": 5, "title": "Great sound", "text": "Crisp sound and the noise cancelling works really well on the train.", "date": "2026-08-02" },
+      { "author": "Tom B.", "rating": 4, "title": "Comfortable", "text": "Comfortable for long sessions, case is a bit bulky.", "date": "2026-09-11" }
+    ]
+  },
+  {
+    "id": 2, "name": "Bluetooth Speaker", "category": "Electronics", "price": 49.99, "stock": 8, "rating": 4.2,
+    "emoji": "🔊", "color": "#dbeafe",
+    "description": "Portable waterproof speaker with deep bass and 12-hour playtime.",
+    "specs": { "Brand": "Soundly", "Battery": "12 hours", "Waterproof": "IPX7" },
+    "reviews": [
+      { "author": "Leo P.", "rating": 4, "title": "Loud for its size", "text": "Surprisingly loud, survived a pool party.", "date": "2026-07-19" }
+    ]
+  },
+  {
+    "id": 3, "name": "USB-C Charger", "category": "Electronics", "price": 25.00, "stock": 40, "rating": 4.0,
+    "emoji": "🔌", "color": "#f1f5f9",
+    "description": "65 W fast charger with two USB-C ports. Charges a laptop and a phone at the same time.",
+    "specs": { "Brand": "Voltix", "Power": "65 W", "Ports": "2 × USB-C" },
+    "reviews": []
+  },
+  {
+    "id": 4, "name": "Smart Watch", "category": "Electronics", "price": 199.00, "stock": 3, "rating": 4.6,
+    "emoji": "⌚", "color": "#fae8ff",
+    "description": "Fitness tracking, heart-rate monitoring and notifications on your wrist.",
+    "specs": { "Brand": "Pulse", "Battery": "7 days", "Water resistance": "5 ATM" },
+    "reviews": [
+      { "author": "Nina S.", "rating": 5, "title": "Love it", "text": "Battery lasts a full week, sleep tracking is accurate.", "date": "2026-10-01" }
+    ]
+  },
+  {
+    "id": 5, "name": "Mechanical Keyboard", "category": "Electronics", "price": 129.50, "stock": 0, "rating": 4.8,
+    "emoji": "⌨️", "color": "#e2e8f0",
+    "description": "Hot-swappable mechanical keyboard with tactile switches and RGB backlight.",
+    "specs": { "Brand": "Clacky", "Layout": "75%", "Switches": "Tactile brown" },
+    "reviews": [
+      { "author": "Dev R.", "rating": 5, "title": "Best keyboard I've owned", "text": "Typing feel is excellent. Worth every cent.", "date": "2026-06-21" }
+    ]
+  },
+  {
+    "id": 6, "name": "4K Monitor", "category": "Electronics", "price": 349.99, "stock": 5, "rating": 4.4,
+    "emoji": "🖥️", "color": "#cffafe",
+    "description": "27-inch 4K IPS monitor with USB-C power delivery.",
+    "specs": { "Brand": "Viewly", "Size": "27\"", "Resolution": "3840 × 2160" },
+    "reviews": []
+  },
+  {
+    "id": 7, "name": "Classic T-Shirt", "category": "Clothing", "price": 19.99, "stock": 50, "rating": 4.1,
+    "emoji": "👕", "color": "#fee2e2", "sizes": ["S", "M", "L", "XL"],
+    "description": "Soft 100% cotton crew-neck t-shirt.",
+    "specs": { "Material": "100% cotton", "Fit": "Regular" },
+    "reviews": [
+      { "author": "Ann W.", "rating": 4, "title": "Good basic", "text": "Nice fabric, runs slightly large.", "date": "2026-05-30" }
+    ]
+  },
+  {
+    "id": 8, "name": "Denim Jacket", "category": "Clothing", "price": 79.00, "stock": 6, "rating": 4.3,
+    "emoji": "🧥", "color": "#dbeafe", "sizes": ["S", "M", "L", "XL"],
+    "description": "Classic denim jacket with button front and chest pockets.",
+    "specs": { "Material": "Denim", "Fit": "Regular" },
+    "reviews": []
+  },
+  {
+    "id": 9, "name": "Running Shoes", "category": "Clothing", "price": 110.00, "stock": 12, "rating": 4.7,
+    "emoji": "👟", "color": "#dcfce7", "sizes": ["7", "8", "9", "10", "11"],
+    "description": "Lightweight running shoes with responsive cushioning.",
+    "specs": { "Brand": "Stride", "Drop": "8 mm", "Weight": "240 g" },
+    "reviews": [
+      { "author": "Chris J.", "rating": 5, "title": "Super light", "text": "Ran a half marathon in them, no blisters.", "date": "2026-09-03" },
+      { "author": "Ola M.", "rating": 4, "title": "Good, size up", "text": "Comfortable but I needed half a size bigger.", "date": "2026-09-27" }
+    ]
+  },
+  {
+    "id": 10, "name": "Wool Beanie", "category": "Clothing", "price": 15.50, "stock": 0, "rating": 3.9,
+    "emoji": "🧢", "color": "#fef3c7",
+    "description": "Warm merino wool beanie. One size fits most.",
+    "specs": { "Material": "Merino wool", "Size": "One size" },
+    "reviews": []
+  },
+  {
+    "id": 11, "name": "Hoodie", "category": "Clothing", "price": 45.00, "stock": 20, "rating": 4.4,
+    "emoji": "🧶", "color": "#ede9fe", "sizes": ["S", "M", "L", "XL"],
+    "description": "Cozy fleece hoodie with kangaroo pocket.",
+    "specs": { "Material": "Cotton fleece", "Fit": "Relaxed" },
+    "reviews": []
+  },
+  {
+    "id": 12, "name": "Ceramic Mug", "category": "Home", "price": 12.00, "stock": 100, "rating": 4.6,
+    "emoji": "☕", "color": "#ffedd5",
+    "description": "350 ml stoneware mug, dishwasher and microwave safe.",
+    "specs": { "Capacity": "350 ml", "Material": "Stoneware" },
+    "reviews": [
+      { "author": "Pat L.", "rating": 5, "title": "Perfect size", "text": "My new favourite coffee mug.", "date": "2026-04-14" }
+    ]
+  },
+  {
+    "id": 13, "name": "Desk Lamp", "category": "Home", "price": 39.99, "stock": 2, "rating": 4.0,
+    "emoji": "💡", "color": "#fef9c3",
+    "description": "Dimmable LED desk lamp with adjustable arm and colour temperature.",
+    "specs": { "Power": "8 W", "Colour temperature": "2700–6500 K" },
+    "reviews": []
+  },
+  {
+    "id": 14, "name": "Scented Candle", "category": "Home", "price": 18.75, "stock": 30, "rating": 3.8,
+    "emoji": "🕯️", "color": "#fce7f3",
+    "description": "Soy wax candle with vanilla and cedar scent. 40-hour burn time.",
+    "specs": { "Burn time": "40 hours", "Wax": "Soy" },
+    "reviews": []
+  },
+  {
+    "id": 15, "name": "Throw Blanket", "category": "Home", "price": 50.00, "stock": 9, "rating": 4.5,
+    "emoji": "🛋️", "color": "#e0f2fe",
+    "description": "Chunky knit throw blanket, 130 × 170 cm.",
+    "specs": { "Size": "130 × 170 cm", "Material": "Acrylic" },
+    "reviews": []
+  },
+  {
+    "id": 16, "name": "Coffee Grinder", "category": "Home", "price": 64.90, "stock": 0, "rating": 4.2,
+    "emoji": "⚙️", "color": "#f5f5f4",
+    "description": "Electric burr grinder with 15 grind settings.",
+    "specs": { "Settings": "15", "Capacity": "250 g" },
+    "reviews": []
+  },
+  {
+    "id": 17, "name": "The Pragmatic Tester", "category": "Books", "price": 34.99, "stock": 25, "rating": 4.9,
+    "emoji": "📘", "color": "#dbeafe",
+    "description": "A practical guide to software testing, from test design to automation.",
+    "specs": { "Author": "J. Smith", "Pages": "320", "Format": "Paperback" },
+    "reviews": [
+      { "author": "QA Queen", "rating": 5, "title": "Must read", "text": "Every tester should read chapter 4 on boundary values.", "date": "2026-03-08" }
+    ]
+  },
+  {
+    "id": 18, "name": "JavaScript Basics", "category": "Books", "price": 29.00, "stock": 18, "rating": 4.3,
+    "emoji": "📙", "color": "#fef3c7",
+    "description": "Learn modern JavaScript step by step with exercises.",
+    "specs": { "Author": "A. Doe", "Pages": "280", "Format": "Paperback" },
+    "reviews": []
+  },
+  {
+    "id": 19, "name": "Clean Locators", "category": "Books", "price": 24.99, "stock": 1, "rating": 4.1,
+    "emoji": "📗", "color": "#dcfce7",
+    "description": "How to write stable, readable locators for UI tests.",
+    "specs": { "Author": "R. Role", "Pages": "190", "Format": "Hardcover" },
+    "reviews": []
+  },
+  {
+    "id": 20, "name": "Mystery of the Flaky Test", "category": "Books", "price": 9.99, "stock": 60, "rating": 3.5,
+    "emoji": "📕", "color": "#fee2e2",
+    "description": "A detective novel where the culprit is a race condition.",
+    "specs": { "Author": "K. Timeout", "Pages": "240", "Format": "Paperback" },
+    "reviews": [
+      { "author": "Sam R.", "rating": 3, "title": "Fun but predictable", "text": "I guessed it was the missing await by chapter two.", "date": "2026-02-17" }
+    ]
+  },
+  {
+    "id": 21, "name": "Yoga Mat", "category": "Sports", "price": 30.00, "stock": 22, "rating": 4.4,
+    "emoji": "🧘", "color": "#ccfbf1",
+    "description": "Non-slip 6 mm yoga mat with carrying strap.",
+    "specs": { "Thickness": "6 mm", "Length": "183 cm" },
+    "reviews": []
+  },
+  {
+    "id": 22, "name": "Water Bottle", "category": "Sports", "price": 14.99, "stock": 70, "rating": 4.0,
+    "emoji": "🥤", "color": "#e0f2fe",
+    "description": "Insulated stainless-steel bottle, keeps drinks cold for 24 hours.",
+    "specs": { "Capacity": "750 ml", "Material": "Stainless steel" },
+    "reviews": []
+  },
+  {
+    "id": 23, "name": "Dumbbell Set", "category": "Sports", "price": 99.00, "stock": 4, "rating": 4.6,
+    "emoji": "🏋️", "color": "#e5e7eb",
+    "description": "Adjustable dumbbell pair, 2–20 kg each.",
+    "specs": { "Weight range": "2–20 kg", "Pieces": "2" },
+    "reviews": []
+  },
+  {
+    "id": 24, "name": "Pro Carbon Racket", "category": "Sports", "price": 999.99, "stock": 2, "rating": 4.9,
+    "emoji": "🎾", "color": "#ecfccb",
+    "description": "Tournament-grade carbon fibre tennis racket.",
+    "specs": { "Weight": "300 g", "Head size": "98 sq in" },
+    "reviews": []
+  },
+  {
+    "id": 25, "name": "Chef's Knife & Sharpener", "category": "Home", "price": 74.00, "stock": 11, "rating": 4.7,
+    "emoji": "🔪", "color": "#f1f5f9",
+    "description": "20 cm stainless-steel chef's knife with a two-stage sharpener.",
+    "specs": { "Blade": "20 cm", "Material": "Stainless steel" },
+    "reviews": []
+  }
+]

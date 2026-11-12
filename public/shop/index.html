@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shop | PracticeShop</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/test-hooks.js"></script>
+  <script type="module" src="js/pages/catalog.js"></script>
+</head>
+<body>
+  <div id="app-header"></div>
+  <main id="main" class="container">
+    <h1>Shop all products</h1>
+    <div class="catalog">
+      <aside class="filters">
+        <form id="filters" aria-label="Product filters" novalidate>
+          <div class="field">
+            <label for="search">Search products</label>
+            <input id="search" type="search" placeholder="Search by name" autocomplete="off">
+          </div>
+
+          <fieldset class="field">
+            <legend>Category</legend>
+            <div id="category-options" class="checkbox-list"></div>
+          </fieldset>
+
+          <div class="field">
+            <label for="max-price">Maximum price</label>
+            <input id="max-price" type="range" min="10" max="1000" step="10" value="1000">
+            <output id="max-price-output" for="max-price">Up to $1,000</output>
+          </div>
+
+          <div class="field">
+            <label for="min-rating">Customer rating</label>
+            <select id="min-rating">
+              <option value="0">Any rating</option>
+              <option value="4">4 stars &amp; up</option>
+              <option value="3">3 stars &amp; up</option>
+            </select>
+          </div>
+
+          <div class="field checkbox">
+            <input id="in-stock" type="checkbox">
+            <label for="in-stock">In stock only</label>
+          </div>
+
+          <button type="button" id="clear-filters" class="btn btn-secondary btn-block">Clear filters</button>
+        </form>
+      </aside>
+
+      <section class="results" aria-labelledby="results-heading">
+        <h2 id="results-heading" class="visually-hidden">Products</h2>
+        <div class="toolbar">
+          <p id="result-count" role="status" data-testid="result-count"></p>
+          <div class="toolbar-controls">
+            <label for="sort">Sort by</label>
+            <select id="sort">
+              <option value="featured">Featured</option>
+              <option value="name-asc">Name: A to Z</option>
+              <option value="name-desc">Name: Z to A</option>
+              <option value="price-asc">Price: low to high</option>
+              <option value="price-desc">Price: high to low</option>
+              <option value="rating-desc">Customer rating</option>
+            </select>
+            <div class="view-toggle" role="group" aria-label="View">
+              <button type="button" class="icon-btn" data-view="grid" aria-pressed="true" title="Grid view">▦<span class="visually-hidden">Grid view</span></button>
+              <button type="button" class="icon-btn" data-view="list" aria-pressed="false" title="List view">☰<span class="visually-hidden">List view</span></button>
+            </div>
+          </div>
+        </div>
+        <div id="product-list" class="product-grid"></div>
+        <nav id="pagination" class="pagination" aria-label="Pagination"></nav>
+      </section>
+    </div>
+  </main>
+  <div id="app-footer"></div>
+</body>
+</html>

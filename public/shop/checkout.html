@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout | PracticeShop</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/test-hooks.js"></script>
+  <script type="module" src="js/pages/checkout.js"></script>
+</head>
+<body>
+  <div id="app-header"></div>
+  <main id="main" class="container">
+    <h1>Checkout</h1>
+    <ol class="stepper" aria-label="Checkout progress">
+      <li data-step="1">Shipping</li>
+      <li data-step="2">Payment</li>
+      <li data-step="3">Review</li>
+    </ol>
+
+    <div class="checkout-layout">
+      <div>
+        <!-- Step 1 -->
+        <section id="step-1" class="card" aria-labelledby="step-1-title">
+          <h2 id="step-1-title" tabindex="-1">Shipping details</h2>
+          <form id="shipping-form" novalidate>
+            <div class="field">
+              <label for="full-name">Full name</label>
+              <input id="full-name" autocomplete="name" aria-describedby="full-name-error">
+              <p class="error" id="full-name-error" hidden></p>
+            </div>
+            <div class="field">
+              <label for="address1">Address</label>
+              <input id="address1" autocomplete="address-line1" aria-describedby="address1-error">
+              <p class="error" id="address1-error" hidden></p>
+            </div>
+            <div class="field">
+              <label for="address2">Apartment, suite, etc. <span class="muted">(optional)</span></label>
+              <input id="address2" autocomplete="address-line2">
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="city">City</label>
+                <input id="city" autocomplete="address-level2" aria-describedby="city-error">
+                <p class="error" id="city-error" hidden></p>
+              </div>
+              <div class="field">
+                <label for="country">Country</label>
+                <select id="country" autocomplete="country" aria-describedby="country-error">
+                  <option value="">Select a country</option>
+                  <option value="US">United States</option>
+                  <option value="GB">United Kingdom</option>
+                  <option value="CA">Canada</option>
+                </select>
+                <p class="error" id="country-error" hidden></p>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="region" id="region-label">State / region</label>
+                <select id="region" aria-describedby="region-error" disabled>
+                  <option value="">Select a country first</option>
+                </select>
+                <p class="error" id="region-error" hidden></p>
+              </div>
+              <div class="field">
+                <label for="postal" id="postal-label">Postal code</label>
+                <input id="postal" autocomplete="postal-code" aria-describedby="postal-hint postal-error">
+                <p class="hint" id="postal-hint"></p>
+                <p class="error" id="postal-error" hidden></p>
+              </div>
+            </div>
+            <div class="field">
+              <label for="phone">Phone number</label>
+              <input id="phone" type="tel" autocomplete="tel" aria-describedby="phone-hint phone-error">
+              <p class="hint" id="phone-hint">Include the country code, e.g. +1 415 555 0101</p>
+              <p class="error" id="phone-error" hidden></p>
+            </div>
+
+            <fieldset class="field" id="delivery" aria-describedby="delivery-error">
+              <legend>Delivery method</legend>
+              <div class="radio-card">
+                <input type="radio" name="delivery" id="delivery-standard" value="standard" checked>
+                <label for="delivery-standard"><strong>Standard</strong> · 3–5 business days · <span id="standard-price"></span></label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="delivery" id="delivery-express" value="express">
+                <label for="delivery-express"><strong>Express</strong> · 1–2 business days · +$9.99</label>
+              </div>
+              <p class="error" id="delivery-error" hidden></p>
+            </fieldset>
+
+            <div class="field date-field">
+              <label for="delivery-date">Preferred delivery date</label>
+              <div class="input-with-button">
+                <input id="delivery-date" placeholder="YYYY-MM-DD" autocomplete="off" aria-describedby="delivery-date-hint delivery-date-error">
+                <button type="button" class="btn btn-secondary btn-sm" id="delivery-date-button">Choose date</button>
+              </div>
+              <p class="hint" id="delivery-date-hint">Weekdays only, from <span id="earliest-date"></span>, up to 30 days ahead.</p>
+              <p class="error" id="delivery-date-error" hidden></p>
+            </div>
+
+            <div class="button-row end">
+              <a class="btn btn-secondary" href="cart.html">Back to cart</a>
+              <button type="submit" class="btn btn-primary">Continue to payment</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Step 2 -->
+        <section id="step-2" class="card" aria-labelledby="step-2-title" hidden>
+          <h2 id="step-2-title" tabindex="-1">Payment</h2>
+          <form id="payment-form" novalidate>
+            <fieldset class="field">
+              <legend>Payment method</legend>
+              <div class="radio-card">
+                <input type="radio" name="method" id="method-card" value="card" checked>
+                <label for="method-card">Credit or debit card</label>
+              </div>
+              <div class="radio-card">
+                <input type="radio" name="method" id="method-cod" value="cod">
+                <label for="method-cod">Pay on delivery</label>
+              </div>
+            </fieldset>
+
+            <div id="card-fields">
+              <div class="field">
+                <label for="card-name">Name on card</label>
+                <input id="card-name" autocomplete="cc-name" aria-describedby="card-name-error">
+                <p class="error" id="card-name-error" hidden></p>
+              </div>
+              <div class="field">
+                <label for="card-number">Card number</label>
+                <div class="input-with-addon">
+                  <input id="card-number" inputmode="numeric" autocomplete="cc-number" maxlength="23" placeholder="1234 5678 9012 3456" aria-describedby="card-number-error">
+                  <span class="addon" id="card-brand" data-testid="card-brand" aria-live="polite"></span>
+                </div>
+                <p class="error" id="card-number-error" hidden></p>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label for="card-expiry">Expiry date</label>
+                  <input id="card-expiry" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" maxlength="5" aria-describedby="card-expiry-error">
+                  <p class="error" id="card-expiry-error" hidden></p>
+                </div>
+                <div class="field">
+                  <label for="card-cvv">Security code
+                    <span class="tooltip">
+                      <button type="button" class="tooltip-trigger" aria-describedby="cvv-tip">?</button>
+                      <span role="tooltip" id="cvv-tip">3 digits on the back of your card (4 on the front for American Express)</span>
+                    </span>
+                  </label>
+                  <input id="card-cvv" inputmode="numeric" autocomplete="cc-csc" maxlength="4" aria-describedby="card-cvv-error">
+                  <p class="error" id="card-cvv-error" hidden></p>
+                </div>
+              </div>
+            </div>
+            <p id="cod-note" class="info-note" hidden>You'll pay the courier in cash or by card when your order arrives.</p>
+
+            <div class="button-row end">
+              <button type="button" class="btn btn-secondary" data-goto="1">Back</button>
+              <button type="submit" class="btn btn-primary">Continue to review</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Step 3 -->
+        <section id="step-3" class="card" aria-labelledby="step-3-title" hidden>
+          <h2 id="step-3-title" tabindex="-1">Review your order</h2>
+          <div id="order-error" class="alert alert-error" role="alert" data-testid="order-error" hidden></div>
+          <div id="review-content"></div>
+          <form id="place-form" novalidate>
+            <div class="field">
+              <div class="checkbox">
+                <input type="checkbox" id="accept-terms" aria-describedby="accept-terms-error">
+                <label for="accept-terms">I agree to the Terms and Conditions</label>
+              </div>
+              <p class="error" id="accept-terms-error" hidden></p>
+            </div>
+            <div class="button-row end">
+              <button type="button" class="btn btn-secondary" data-goto="2">Back</button>
+              <button type="submit" class="btn btn-primary" id="place-order">Place order</button>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <aside class="summary card" aria-labelledby="checkout-summary-heading">
+        <h2 id="checkout-summary-heading">Order summary</h2>
+        <ul class="mini-cart" id="mini-cart"></ul>
+        <div id="checkout-totals"></div>
+      </aside>
+    </div>
+  </main>
+  <div id="app-footer"></div>
+</body>
+</html>

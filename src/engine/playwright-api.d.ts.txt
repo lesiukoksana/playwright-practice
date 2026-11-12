@@ -1,0 +1,404 @@
+// Type definitions for the Playwright subset supported by Playwright Lab.
+// Used by the editor for autocomplete and inline errors.
+
+declare module '@playwright/test' {
+  type StringOrRegExp = string | RegExp;
+
+  type AriaRole =
+    | 'alert' | 'alertdialog' | 'application' | 'article' | 'banner' | 'blockquote' | 'button' | 'caption' | 'cell'
+    | 'checkbox' | 'code' | 'columnheader' | 'combobox' | 'complementary' | 'contentinfo' | 'definition' | 'deletion'
+    | 'dialog' | 'directory' | 'document' | 'emphasis' | 'feed' | 'figure' | 'form' | 'generic' | 'grid' | 'gridcell'
+    | 'group' | 'heading' | 'img' | 'insertion' | 'link' | 'list' | 'listbox' | 'listitem' | 'log' | 'main' | 'marquee'
+    | 'math' | 'meter' | 'menu' | 'menubar' | 'menuitem' | 'menuitemcheckbox' | 'menuitemradio' | 'navigation' | 'none'
+    | 'note' | 'option' | 'paragraph' | 'presentation' | 'progressbar' | 'radio' | 'radiogroup' | 'region' | 'row'
+    | 'rowgroup' | 'rowheader' | 'scrollbar' | 'search' | 'searchbox' | 'separator' | 'slider' | 'spinbutton' | 'status'
+    | 'strong' | 'subscript' | 'superscript' | 'switch' | 'tab' | 'table' | 'tablist' | 'tabpanel' | 'term' | 'textbox'
+    | 'time' | 'timer' | 'toolbar' | 'tooltip' | 'tree' | 'treegrid' | 'treeitem';
+
+  interface TimeoutOptions { timeout?: number }
+
+  interface FilterOptions {
+    /** Matches elements containing this text somewhere inside (case-insensitive substring). */
+    hasText?: StringOrRegExp;
+    hasNotText?: StringOrRegExp;
+    /** Matches elements that contain an element matching this inner locator. */
+    has?: Locator;
+    hasNot?: Locator;
+    visible?: boolean;
+  }
+
+  interface GetByRoleOptions {
+    /** Accessible name. Case-insensitive substring match unless `exact: true`. */
+    name?: StringOrRegExp;
+    exact?: boolean;
+    checked?: boolean;
+    disabled?: boolean;
+    expanded?: boolean;
+    includeHidden?: boolean;
+    level?: number;
+    pressed?: boolean;
+    selected?: boolean;
+  }
+
+  interface TextOptions { exact?: boolean }
+
+  interface FilePayload {
+    name: string;
+    mimeType: string;
+    buffer: Uint8Array | string;
+  }
+
+  interface SelectOption { value?: string; label?: string; index?: number }
+
+  interface Locators {
+    locator(selector: string | Locator, options?: FilterOptions): Locator;
+    getByRole(role: AriaRole, options?: GetByRoleOptions): Locator;
+    getByText(text: StringOrRegExp, options?: TextOptions): Locator;
+    getByLabel(text: StringOrRegExp, options?: TextOptions): Locator;
+    getByPlaceholder(text: StringOrRegExp, options?: TextOptions): Locator;
+    getByAltText(text: StringOrRegExp, options?: TextOptions): Locator;
+    getByTitle(text: StringOrRegExp, options?: TextOptions): Locator;
+    getByTestId(testId: StringOrRegExp): Locator;
+    frameLocator(selector: string): FrameLocator;
+  }
+
+  export interface Locator extends Locators {
+    first(): Locator;
+    last(): Locator;
+    nth(index: number): Locator;
+    filter(options: FilterOptions): Locator;
+    and(locator: Locator): Locator;
+    or(locator: Locator): Locator;
+    contentFrame(): FrameLocator;
+    page(): Page;
+
+    click(options?: { button?: 'left' | 'right' | 'middle'; clickCount?: number; modifiers?: Array<'Alt' | 'Control' | 'ControlOrMeta' | 'Meta' | 'Shift'>; force?: boolean; trial?: boolean; timeout?: number }): Promise<void>;
+    dblclick(options?: { force?: boolean; timeout?: number }): Promise<void>;
+    hover(options?: { force?: boolean; timeout?: number }): Promise<void>;
+    tap(options?: TimeoutOptions): Promise<void>;
+    fill(value: string, options?: { force?: boolean; timeout?: number }): Promise<void>;
+    clear(options?: TimeoutOptions): Promise<void>;
+    pressSequentially(text: string, options?: { delay?: number; timeout?: number }): Promise<void>;
+    /** @deprecated Use fill() or pressSequentially(). */
+    type(text: string, options?: { delay?: number; timeout?: number }): Promise<void>;
+    press(key: string, options?: TimeoutOptions): Promise<void>;
+    focus(options?: TimeoutOptions): Promise<void>;
+    blur(options?: TimeoutOptions): Promise<void>;
+    check(options?: { force?: boolean; timeout?: number }): Promise<void>;
+    uncheck(options?: { force?: boolean; timeout?: number }): Promise<void>;
+    setChecked(checked: boolean, options?: { force?: boolean; timeout?: number }): Promise<void>;
+    selectOption(values: string | SelectOption | Array<string | SelectOption> | null, options?: TimeoutOptions): Promise<string[]>;
+    setInputFiles(files: FilePayload | FilePayload[], options?: TimeoutOptions): Promise<void>;
+    dragTo(target: Locator, options?: TimeoutOptions): Promise<void>;
+    scrollIntoViewIfNeeded(options?: TimeoutOptions): Promise<void>;
+    highlight(): Promise<void>;
+    waitFor(options?: { state?: 'attached' | 'detached' | 'visible' | 'hidden'; timeout?: number }): Promise<void>;
+
+    textContent(options?: TimeoutOptions): Promise<string | null>;
+    innerText(options?: TimeoutOptions): Promise<string>;
+    innerHTML(options?: TimeoutOptions): Promise<string>;
+    inputValue(options?: TimeoutOptions): Promise<string>;
+    getAttribute(name: string, options?: TimeoutOptions): Promise<string | null>;
+    isVisible(): Promise<boolean>;
+    isHidden(): Promise<boolean>;
+    isEnabled(options?: TimeoutOptions): Promise<boolean>;
+    isDisabled(options?: TimeoutOptions): Promise<boolean>;
+    isEditable(options?: TimeoutOptions): Promise<boolean>;
+    isChecked(options?: TimeoutOptions): Promise<boolean>;
+    count(): Promise<number>;
+    all(): Promise<Locator[]>;
+    allTextContents(): Promise<string[]>;
+    allInnerTexts(): Promise<string[]>;
+    boundingBox(options?: TimeoutOptions): Promise<{ x: number; y: number; width: number; height: number } | null>;
+    evaluate<R, Arg = unknown>(fn: (element: HTMLElement, arg: Arg) => R | Promise<R>, arg?: Arg): Promise<R>;
+    evaluateAll<R, Arg = unknown>(fn: (elements: HTMLElement[], arg: Arg) => R | Promise<R>, arg?: Arg): Promise<R>;
+    screenshot(): Promise<Uint8Array>;
+  }
+
+  export interface FrameLocator {
+    locator(selector: string | Locator): Locator;
+    getByRole(role: AriaRole, options?: GetByRoleOptions): Locator;
+    getByText(text: StringOrRegExp, options?: TextOptions): Locator;
+    getByLabel(text: StringOrRegExp, options?: TextOptions): Locator;
+    getByPlaceholder(text: StringOrRegExp, options?: TextOptions): Locator;
+    getByAltText(text: StringOrRegExp, options?: TextOptions): Locator;
+    getByTitle(text: StringOrRegExp, options?: TextOptions): Locator;
+    getByTestId(testId: StringOrRegExp): Locator;
+    frameLocator(selector: string): FrameLocator;
+    first(): FrameLocator;
+    last(): FrameLocator;
+    nth(index: number): FrameLocator;
+    owner(): Locator;
+  }
+
+  export interface Dialog {
+    type(): 'alert' | 'beforeunload' | 'confirm' | 'prompt';
+    message(): string;
+    defaultValue(): string;
+    accept(promptText?: string): Promise<void>;
+    dismiss(): Promise<void>;
+    page(): Page | null;
+  }
+
+  export interface Request {
+    url(): string;
+    method(): string;
+    headers(): Record<string, string>;
+    postData(): string | null;
+    postDataJSON(): any;
+    resourceType(): string;
+  }
+
+  export interface APIResponse {
+    status(): number;
+    statusText(): string;
+    ok(): boolean;
+    url(): string;
+    headers(): Record<string, string>;
+    text(): Promise<string>;
+    json(): Promise<any>;
+    body(): Promise<Uint8Array>;
+  }
+
+  export interface Route {
+    request(): Request;
+    fulfill(options?: { status?: number; body?: string; json?: any; contentType?: string; headers?: Record<string, string>; response?: APIResponse }): Promise<void>;
+    continue(): Promise<void>;
+    fallback(): Promise<void>;
+    abort(errorCode?: string): Promise<void>;
+    fetch(): Promise<APIResponse>;
+  }
+
+  export interface ConsoleMessage {
+    type(): string;
+    text(): string;
+    args(): unknown[];
+    page(): Page | null;
+  }
+
+  export interface Download {
+    suggestedFilename(): string;
+    url(): string;
+    page(): Page;
+    failure(): Promise<string | null>;
+  }
+
+  export interface Keyboard {
+    press(key: string): Promise<void>;
+    type(text: string): Promise<void>;
+    insertText(text: string): Promise<void>;
+  }
+
+  export interface Clock {
+    /** Freezes Date / Date.now() in the page at this time. Call it before page.goto(). */
+    setFixedTime(time: number | string | Date): Promise<void>;
+    /** Makes time start at `time` and keep flowing. */
+    install(options?: { time?: number | string | Date }): Promise<void>;
+    setSystemTime(time: number | string | Date): Promise<void>;
+  }
+
+  type URLMatch = string | RegExp | ((url: URL) => boolean);
+
+  export interface Page extends Locators {
+    readonly keyboard: Keyboard;
+    readonly clock: Clock;
+    goto(url: string, options?: { timeout?: number; waitUntil?: 'load' | 'domcontentloaded' | 'networkidle' | 'commit' }): Promise<null>;
+    reload(options?: TimeoutOptions): Promise<null>;
+    goBack(options?: TimeoutOptions): Promise<null>;
+    goForward(options?: TimeoutOptions): Promise<null>;
+    url(): string;
+    title(): Promise<string>;
+    content(): Promise<string>;
+    waitForURL(url: URLMatch, options?: TimeoutOptions): Promise<void>;
+    waitForLoadState(state?: 'load' | 'domcontentloaded' | 'networkidle', options?: TimeoutOptions): Promise<void>;
+    /** Avoid in real tests: prefer web-first assertions that wait automatically. */
+    waitForTimeout(timeout: number): Promise<void>;
+    waitForSelector(selector: string, options?: { state?: 'attached' | 'detached' | 'visible' | 'hidden'; timeout?: number }): Promise<void>;
+    waitForFunction<R, Arg = unknown>(fn: string | ((arg: Arg) => R), arg?: Arg, options?: { timeout?: number; polling?: number }): Promise<R>;
+
+    on(event: 'dialog', listener: (dialog: Dialog) => any): Page;
+    on(event: 'console', listener: (message: ConsoleMessage) => any): Page;
+    on(event: 'pageerror', listener: (error: Error) => any): Page;
+    on(event: 'popup', listener: (page: Page) => any): Page;
+    on(event: 'download', listener: (download: Download) => any): Page;
+    on(event: 'load' | 'close', listener: (page: Page) => any): Page;
+    once(event: 'dialog', listener: (dialog: Dialog) => any): Page;
+    once(event: 'console', listener: (message: ConsoleMessage) => any): Page;
+    once(event: 'pageerror', listener: (error: Error) => any): Page;
+    once(event: 'popup', listener: (page: Page) => any): Page;
+    once(event: 'download', listener: (download: Download) => any): Page;
+    once(event: 'load' | 'close', listener: (page: Page) => any): Page;
+    off(event: string, listener: (...args: any[]) => any): Page;
+    removeAllListeners(event?: string): Page;
+    waitForEvent(event: 'popup', optionsOrPredicate?: ((page: Page) => boolean | Promise<boolean>) | { predicate?: (page: Page) => boolean | Promise<boolean>; timeout?: number }): Promise<Page>;
+    waitForEvent(event: 'download', optionsOrPredicate?: ((d: Download) => boolean | Promise<boolean>) | { timeout?: number }): Promise<Download>;
+    waitForEvent(event: 'console', optionsOrPredicate?: ((m: ConsoleMessage) => boolean | Promise<boolean>) | { timeout?: number }): Promise<ConsoleMessage>;
+    waitForEvent(event: 'dialog', optionsOrPredicate?: ((d: Dialog) => boolean | Promise<boolean>) | { timeout?: number }): Promise<Dialog>;
+    waitForEvent(event: 'load' | 'close', optionsOrPredicate?: { timeout?: number }): Promise<Page>;
+
+    route(url: URLMatch, handler: (route: Route, request: Request) => any, options?: { times?: number }): Promise<void>;
+    unroute(url: URLMatch, handler?: (route: Route, request: Request) => any): Promise<void>;
+    unrouteAll(): Promise<void>;
+    evaluate<R, Arg = unknown>(fn: string | ((arg: Arg) => R | Promise<R>), arg?: Arg): Promise<R>;
+    addInitScript<Arg = unknown>(script: string | ((arg: Arg) => any) | { content?: string }, arg?: Arg): Promise<void>;
+    addLocatorHandler(locator: Locator, handler: (locator: Locator) => Promise<any>, options?: { times?: number; noWaitAfter?: boolean }): Promise<void>;
+    removeLocatorHandler(locator: Locator): Promise<void>;
+
+    /** @deprecated Use locator-based actions such as page.locator(selector).click(). */
+    click(selector: string, options?: { timeout?: number }): Promise<void>;
+    /** @deprecated Use page.locator(selector).fill(value). */
+    fill(selector: string, value: string, options?: TimeoutOptions): Promise<void>;
+
+    context(): BrowserContext;
+    setViewportSize(size: { width: number; height: number }): Promise<void>;
+    viewportSize(): { width: number; height: number } | null;
+    bringToFront(): Promise<void>;
+    close(): Promise<void>;
+    isClosed(): boolean;
+    screenshot(options?: unknown): Promise<Uint8Array>;
+    pause(): Promise<void>;
+  }
+
+  export interface BrowserContext {
+    pages(): Page[];
+    newPage(): Promise<Page>;
+    on(event: 'page', listener: (page: Page) => any): BrowserContext;
+    waitForEvent(event: 'page', optionsOrPredicate?: ((page: Page) => boolean | Promise<boolean>) | { predicate?: (page: Page) => boolean | Promise<boolean>; timeout?: number }): Promise<Page>;
+    route(url: URLMatch, handler: (route: Route, request: Request) => any, options?: { times?: number }): Promise<void>;
+    addInitScript<Arg = unknown>(script: string | ((arg: Arg) => any) | { content?: string }, arg?: Arg): Promise<void>;
+    clearCookies(): Promise<void>;
+    storageState(): Promise<{ cookies: unknown[]; origins: { origin: string; localStorage: { name: string; value: string }[] }[] }>;
+    close(): Promise<void>;
+  }
+
+  export interface APIRequestContext {
+    get(url: string, options?: { headers?: Record<string, string> }): Promise<APIResponse>;
+    post(url: string, options?: { data?: unknown; headers?: Record<string, string> }): Promise<APIResponse>;
+    put(url: string, options?: { data?: unknown }): Promise<APIResponse>;
+    delete(url: string, options?: { headers?: Record<string, string> }): Promise<APIResponse>;
+  }
+
+  export interface TestInfo {
+    title: string;
+    titlePath: string[];
+    retry: number;
+    timeout: number;
+    project: { name: string };
+  }
+
+  export interface Fixtures {
+    page: Page;
+    context: BrowserContext;
+    request: APIRequestContext;
+    baseURL: string;
+    browserName: 'chromium';
+  }
+
+  type TestBody = (fixtures: Fixtures, testInfo: TestInfo) => Promise<void> | void;
+  type HookBody = (fixtures: Fixtures, testInfo: TestInfo) => Promise<any> | any;
+
+  interface DescribeFn {
+    (title: string, callback: () => void): void;
+    only(title: string, callback: () => void): void;
+    skip(title: string, callback: () => void): void;
+    fixme(title: string, callback: () => void): void;
+    serial(title: string, callback: () => void): void;
+    parallel(title: string, callback: () => void): void;
+    configure(options: { mode?: 'default' | 'parallel' | 'serial'; retries?: number; timeout?: number }): void;
+  }
+
+  interface TestFn {
+    (title: string, body: TestBody): void;
+    only(title: string, body: TestBody): void;
+    skip(title: string, body: TestBody): void;
+    skip(condition?: boolean, description?: string): void;
+    fixme(title: string, body: TestBody): void;
+    fixme(condition?: boolean, description?: string): void;
+    slow(): void;
+    describe: DescribeFn;
+    beforeEach(body: HookBody): void;
+    beforeEach(title: string, body: HookBody): void;
+    afterEach(body: HookBody): void;
+    afterEach(title: string, body: HookBody): void;
+    beforeAll(body: (fixtures: { baseURL: string }) => Promise<any> | any): void;
+    afterAll(body: (fixtures: { baseURL: string }) => Promise<any> | any): void;
+    step<T>(title: string, body: () => Promise<T> | T): Promise<T>;
+    setTimeout(timeout: number): void;
+  }
+
+  export const test: TestFn;
+
+  interface LocatorAssertions {
+    toBeVisible(options?: { visible?: boolean; timeout?: number }): Promise<void>;
+    toBeHidden(options?: TimeoutOptions): Promise<void>;
+    toBeAttached(options?: { attached?: boolean; timeout?: number }): Promise<void>;
+    toBeEnabled(options?: TimeoutOptions): Promise<void>;
+    toBeDisabled(options?: TimeoutOptions): Promise<void>;
+    toBeEditable(options?: TimeoutOptions): Promise<void>;
+    toBeFocused(options?: TimeoutOptions): Promise<void>;
+    toBeEmpty(options?: TimeoutOptions): Promise<void>;
+    toBeChecked(options?: { checked?: boolean; timeout?: number }): Promise<void>;
+    /** Full text match (whitespace normalized). Use toContainText for a substring. */
+    toHaveText(expected: StringOrRegExp | Array<StringOrRegExp>, options?: { ignoreCase?: boolean; useInnerText?: boolean; timeout?: number }): Promise<void>;
+    toContainText(expected: StringOrRegExp | Array<StringOrRegExp>, options?: { ignoreCase?: boolean; useInnerText?: boolean; timeout?: number }): Promise<void>;
+    toHaveValue(value: StringOrRegExp, options?: TimeoutOptions): Promise<void>;
+    toHaveAttribute(name: string, value?: StringOrRegExp, options?: TimeoutOptions): Promise<void>;
+    toHaveClass(expected: StringOrRegExp, options?: TimeoutOptions): Promise<void>;
+    toContainClass(expected: string, options?: TimeoutOptions): Promise<void>;
+    toHaveId(id: StringOrRegExp, options?: TimeoutOptions): Promise<void>;
+    toHaveCSS(name: string, value: StringOrRegExp, options?: TimeoutOptions): Promise<void>;
+    toHaveCount(count: number, options?: TimeoutOptions): Promise<void>;
+    toHaveAccessibleName(name: StringOrRegExp, options?: TimeoutOptions): Promise<void>;
+    toHaveRole(role: AriaRole, options?: TimeoutOptions): Promise<void>;
+    readonly not: LocatorAssertions;
+  }
+
+  interface PageAssertions {
+    toHaveURL(url: string | RegExp | ((url: URL) => boolean), options?: TimeoutOptions): Promise<void>;
+    toHaveTitle(title: StringOrRegExp, options?: TimeoutOptions): Promise<void>;
+    readonly not: PageAssertions;
+  }
+
+  interface GenericAssertions<R> {
+    toBe(expected: unknown): void;
+    toEqual(expected: unknown): void;
+    toStrictEqual(expected: unknown): void;
+    toMatchObject(expected: Record<string, unknown> | unknown[]): void;
+    toBeTruthy(): void;
+    toBeFalsy(): void;
+    toBeNull(): void;
+    toBeUndefined(): void;
+    toBeDefined(): void;
+    toBeNaN(): void;
+    toBeGreaterThan(expected: number): void;
+    toBeGreaterThanOrEqual(expected: number): void;
+    toBeLessThan(expected: number): void;
+    toBeLessThanOrEqual(expected: number): void;
+    toBeCloseTo(expected: number, numDigits?: number): void;
+    toContain(expected: unknown): void;
+    toContainEqual(expected: unknown): void;
+    toHaveLength(expected: number): void;
+    toMatch(expected: StringOrRegExp): void;
+    toHaveProperty(path: string | string[], value?: unknown): void;
+    toBeInstanceOf(expected: Function): void;
+    toThrow(expected?: StringOrRegExp): void;
+    readonly not: GenericAssertions<R>;
+  }
+
+  type PollAssertions = { [K in Exclude<keyof GenericAssertions<unknown>, 'not'>]: (...args: Parameters<GenericAssertions<unknown>[K]>) => Promise<void> } & { readonly not: PollAssertions };
+
+  type Assertions<T> = T extends Locator ? LocatorAssertions : T extends Page ? PageAssertions : GenericAssertions<T>;
+
+  interface Expect {
+    <T>(actual: T, message?: string): Assertions<T>;
+    soft<T>(actual: T, message?: string): Assertions<T>;
+    poll<T>(fn: () => T | Promise<T>, options?: { timeout?: number; message?: string }): PollAssertions;
+    configure(options: { soft?: boolean; timeout?: number }): Expect;
+  }
+
+  export const expect: Expect;
+}
+
+declare const Buffer: {
+  from(data: string, encoding?: 'utf8' | 'utf-8' | 'base64'): Uint8Array;
+};

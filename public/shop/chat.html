@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Support chat | PracticeShop</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/test-hooks.js"></script>
+</head>
+<body class="chat-body">
+  <main class="chat">
+    <ol class="chat-messages" id="messages" aria-label="Conversation" aria-live="polite">
+      <li class="msg bot">Hi! I'm ShopBot. Ask me about shipping, returns or your order.</li>
+    </ol>
+    <p class="typing" id="typing" hidden>ShopBot is typing…</p>
+    <form class="chat-form" id="chat-form">
+      <label for="message" class="visually-hidden">Message</label>
+      <input id="message" placeholder="Type a message" autocomplete="off">
+      <button type="submit" class="btn btn-primary btn-sm">Send</button>
+    </form>
+  </main>
+  <script>
+    const messages = document.getElementById('messages');
+    const typing = document.getElementById('typing');
+    const input = document.getElementById('message');
+    const replies = [
+      [/ship|deliver/i, 'Standard shipping costs $5.99 and is free for orders of $50 or more. Express costs $9.99 extra.'],
+      [/return|refund/i, 'You can return any item within 30 days for a full refund.'],
+      [/order|status|track/i, 'You can see the status of your orders on the "My orders" page.'],
+      [/promo|code|discount/i, 'Try the code SAVE10 for 10% off.'],
+      [/hello|hi\b|hey/i, 'Hello! How can I help you today?'],
+    ];
+    function add(text, who) {
+      const li = document.createElement('li');
+      li.className = 'msg ' + who;
+      li.textContent = text;
+      messages.append(li);
+      messages.scrollTop = messages.scrollHeight;
+    }
+    document.getElementById('chat-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+      add(text, 'user');
+      input.value = '';
+      typing.hidden = false;
+      setTimeout(() => {
+        typing.hidden = true;
+        const match = replies.find(([re]) => re.test(text));
+        add(match ? match[1] : "Sorry, I didn't understand that. Try asking about shipping, returns or orders.", 'bot');
+      }, 1000 + Math.random() * 1000);
+    });
+  </script>
+</body>
+</html>
