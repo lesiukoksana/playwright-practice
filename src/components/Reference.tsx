@@ -203,7 +203,7 @@ Real Playwright has it, but this in-browser version doesn't. See the list below 
 ## Differences from real Playwright
 
 - Tests run **in your browser**, against an iframe, one test at a time. The browser is always Chromium-like (your own browser).
-- Each test gets fresh storage, like a new browser context.
+- Each test gets fresh storage, like a new browser context. The lab keeps its copy of the shop's data separate, so tests don't change the shop when you open it in a tab of your own.
 - Timeouts: assertions 5 s (same as Playwright), actions 10 s, test 30 s.
 - Dialog handlers must call \`accept()\` or \`dismiss()\` straight away. Without a handler, dialogs are dismissed, like in Playwright.
 - Not available: screenshots, video and traces, \`page.mouse\`, \`test.use\`, custom fixtures (\`test.extend\`), file paths in \`setInputFiles\`, \`waitForRequest/Response\`, and CSS \`:hover\` styles.

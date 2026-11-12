@@ -35,6 +35,13 @@ async function main() {
   render(p, products);
 }
 
+// The rating comes from all star ratings (ratingCount); only some buyers also write a review.
+function ratingSummary(p) {
+  if (!p.rating) return '<span>No ratings yet</span>';
+  const count = p.ratingCount ? ` (${p.ratingCount} ${p.ratingCount === 1 ? 'rating' : 'ratings'})` : '';
+  return `${stars(p.rating)} <span>${p.rating.toFixed(1)} out of 5${count}</span>`;
+}
+
 function allReviews(p) {
   return [...getUserReviews(p.id), ...(p.reviews ?? [])];
 }
@@ -63,7 +70,7 @@ function render(p, products) {
       <div class="product-info">
         <p class="product-category">${esc(p.category)}</p>
         <h1>${esc(p.name)}</h1>
-        <p class="product-rating">${stars(p.rating)} <span>${p.rating.toFixed(1)} out of 5</span> · <a href="#tab-reviews" id="reviews-link">${reviews.length} ${reviews.length === 1 ? 'review' : 'reviews'}</a></p>
+        <p class="product-rating">${ratingSummary(p)} · <a href="#tab-reviews" id="reviews-link">${reviews.length === 0 ? 'No reviews yet' : `${reviews.length} ${reviews.length === 1 ? 'review' : 'reviews'}`}</a></p>
         <p class="price-lg" data-testid="product-price">${money(p.price)}</p>
         ${stockLabel(p)}
         <p>${esc(p.description)}</p>

@@ -5,6 +5,7 @@ import { LESSON_DOCS } from '../lessons/docs';
 import type { Lesson } from '../lessons/types';
 import { loadCode, loadSetting, markCompleted, saveCode, saveSetting, useProgress } from '../progress';
 import { CodeEditor, type EditorError, type EditorHandle } from './CodeEditor';
+import { ConfirmInline } from './ConfirmInline';
 import { Markdown } from './Markdown';
 import { OutputPanel } from './OutputPanel';
 import { Preview } from './Preview';
@@ -91,11 +92,7 @@ export function Workspace({ lesson }: { lesson: Lesson | null }) {
 
   // Show the app in the preview when a lesson opens.
   useEffect(() => {
-    runtime.stop();
-    runtime.result = null;
-    runtime.console = [];
-    runtime.pickerResult = null;
-    runtime.explore(setup, lesson?.startPath ?? 'index.html');
+    void runtime.open(setup, lesson?.startPath ?? 'index.html');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -148,9 +145,7 @@ export function Workspace({ lesson }: { lesson: Lesson | null }) {
   // Stop recording when leaving the lesson.
   useEffect(() => () => runtime.recorder.stop(), []);
 
-  const resetCode = () => {
-    if (window.confirm('Replace your code with the starter code? Your changes will be lost.')) setCode(initial);
-  };
+  const [confirmReset, setConfirmReset] = useState(false);
 
   return (
     <div
@@ -169,9 +164,8 @@ export function Workspace({ lesson }: { lesson: Lesson | null }) {
                 saveSetting('sandboxSetup', s);
                 runtime.explore(s, 'index.html');
               }}
-              onLoadExample={(c) => {
-                if (code === c || window.confirm('Replace the code in the editor with this example?')) setCode(c);
-              }}
+              code={code}
+              onLoadExample={setCode}
               onCollapse={() => setLessonOpen(false)}
             />
           )
@@ -203,7 +197,15 @@ export function Workspace({ lesson }: { lesson: Lesson | null }) {
           </select>
           <span className="toolbar-spacer" />
           <span className="file-name">example.spec.ts</span>
-          <button className="small-button" onClick={resetCode} disabled={runtime.running} title="Restore the starter code">Reset code</button>
+          {confirmReset ? (
+            <ConfirmInline
+              question={lesson ? 'Replace your code with the starter code?' : 'Replace your code with the first example?'}
+              onYes={() => { setCode(initial); setConfirmReset(false); }}
+              onCancel={() => setConfirmReset(false)}
+            />
+          ) : (
+            <button className="small-button" onClick={() => setConfirmReset(true)} disabled={runtime.running || code === initial} title="Restore the starter code">Reset code</button>
+          )}
         </div>
         <div className="editor-wrap">
           <CodeEditor
@@ -224,7 +226,7 @@ export function Workspace({ lesson }: { lesson: Lesson | null }) {
           onReset={() => resetLayout('output')}
         />
         <div className="output-wrap" style={{ height: layout.output }}>
-          <OutputPanel code={code} onGoToLine={(l) => editor.current?.revealLine(l)} />
+          <OutputPanel onGoToLine={(l) => editor.current?.revealLine(l)} />
         </div>
       </section>
       <Splitter
@@ -295,21 +297,10 @@ function LessonPanel({ lesson, checkState, onShowSolution, onCollapse }: { lesso
         </ul>
         {checkState?.complete && (
           <div className="success-card" role="status">
-            <strong>🎉 Lesson complete!</strong>
-            {next ? (
-              <a className="next-button" href={`#/lesson/${next.id}`}>
-                <span>Next lesson: {next.title}</span>
-                <span aria-hidden="true">→</span>
-              </a>
-            ) : (
-              <>
-                <span>You finished the whole course. Well done!</span>
-                <a className="next-button" href="#/">
-                  <span>Back to the course overview</span>
-                  <span aria-hidden="true">→</span>
-                </a>
-              </>
-            )}
+            <strong>{next ? 'Lesson complete' : 'Course complete'}</strong>
+            <a className="next-button" href={next ? `#/lesson/${next.id}` : '#/'}>
+              {next ? `Next: ${next.title}` : 'Course overview'} <span aria-hidden="true">→</span>
+            </a>
           </div>
         )}
         {checkState && !checkState.complete && checkState.testsPassed && lesson.mutation && checkState.mutation === false && (
@@ -336,11 +327,11 @@ function LessonPanel({ lesson, checkState, onShowSolution, onCollapse }: { lesso
           {!confirmSolution ? (
             <button className="small-button" onClick={() => setConfirmSolution(true)}>Show solution</button>
           ) : (
-            <span className="confirm-inline">
-              Replace your code with the solution?
-              <button className="small-button" onClick={() => { onShowSolution(); setConfirmSolution(false); }}>Yes</button>
-              <button className="small-button" onClick={() => setConfirmSolution(false)}>Cancel</button>
-            </span>
+            <ConfirmInline
+              question="Replace your code with the solution?"
+              onYes={() => { onShowSolution(); setConfirmSolution(false); }}
+              onCancel={() => setConfirmSolution(false)}
+            />
           )}
         </div>
       </section>
@@ -382,7 +373,8 @@ function LessonPanel({ lesson, checkState, onShowSolution, onCollapse }: { lesso
 
 // ---------------------------------------------------------------- sandbox panel
 
-function SandboxPanel({ setup, onChange, onLoadExample, onCollapse }: { setup: LabSetup; onChange: (s: LabSetup) => void; onLoadExample: (code: string) => void; onCollapse: () => void }) {
+function SandboxPanel({ setup, code, onChange, onLoadExample, onCollapse }: { setup: LabSetup; code: string; onChange: (s: LabSetup) => void; onLoadExample: (code: string) => void; onCollapse: () => void }) {
+  const [pending, setPending] = useState<{ name: string; code: string } | null>(null);
   const bugs = setup.bugs === 'all' ? BUGS : setup.bugs ?? [];
   const toggleBug = (b: string) => {
     const next = bugs.includes(b) ? bugs.filter((x) => x !== b) : [...bugs, b];
@@ -401,9 +393,19 @@ function SandboxPanel({ setup, onChange, onLoadExample, onCollapse }: { setup: L
         <h2>Examples</h2>
         <div className="example-list">
           {SANDBOX_EXAMPLES.map((e) => (
-            <button key={e.name} className="small-button" onClick={() => onLoadExample(e.code)}>{e.name}</button>
+            <button key={e.name} className="small-button" onClick={() => (code === e.code ? undefined : setPending(e))}>{e.name}</button>
           ))}
         </div>
+        {pending && (
+          <p className="example-confirm">
+            <ConfirmInline
+              key={pending.name}
+              question={`Replace your code with the "${pending.name}" example?`}
+              onYes={() => { onLoadExample(pending.code); setPending(null); }}
+              onCancel={() => setPending(null)}
+            />
+          </p>
+        )}
       </section>
 
       <section className="task-card">

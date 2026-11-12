@@ -1,4 +1,5 @@
 import { transform } from 'sucrase';
+import { clearShopStorage, isolateStorage, shopLocalStorage } from './storage';
 import { ContextImpl, PageImpl, RequestContextImpl } from './api';
 import { normalizeWhiteSpace } from './dom';
 import { captureUserLine, ClosedError, CompileError, LabError, lineFromError, SkipError } from './errors';
@@ -34,6 +35,8 @@ export interface TestResult {
 
 export interface RunResult {
   label?: string;
+  /** The code that ran, so error snippets still match it after the editor changes. */
+  code: string;
   tests: TestResult[];
   compileError?: { message: string; line?: number };
   calls: Record<string, number>;
@@ -100,7 +103,14 @@ const PARAMS = ['require', 'exports', 'module', 'Buffer', 'console', 'process', 
 export function compile(code: string): (...args: unknown[]) => Promise<void> {
   let js: string;
   try {
-    js = transform(code, { transforms: ['typescript', 'imports'], filePath: 'example.spec.ts', production: true }).code;
+    js = transform(code, {
+      transforms: ['typescript', 'imports'],
+      filePath: 'example.spec.ts',
+      production: true,
+      // Keep ?. and ?? as they are: browsers support them, and Sucrase's helper functions would not exist
+      // inside the page when a function is passed to page.evaluate().
+      disableESTransforms: true,
+    }).code;
   } catch (e) {
     const msg = (e as Error).message;
     const m = /\((\d+):(\d+)\)/.exec(msg);
@@ -147,6 +157,9 @@ export class Runtime {
   // live state for the UI
   running = false;
   result: RunResult | null = null;
+  /** Resolves when no test is running. */
+  private idle: Promise<void> = Promise.resolve();
+  private opened = 0;
   console: ConsoleEntry[] = [];
   highlightState: Highlight | null = null;
   currentLine: number | null = null;
@@ -293,6 +306,8 @@ export class Runtime {
 
   // ----- instrumentation (called synchronously by shop/js/test-hooks.js)
   instrument(win: Window & typeof globalThis) {
+    // Before any page script runs: give the page the lab's own storage area.
+    isolateStorage(win);
     let top: Window = win;
     while (top.parent !== top && top.parent !== window) top = top.parent;
     const page = this.context?._pages.find((p) => p._frame.contentWindow === top);
@@ -625,18 +640,18 @@ export class Runtime {
 
   // ----- storage
   resetStorage(setup: LabSetup) {
-    for (const store of [localStorage, sessionStorage]) {
-      for (const k of Object.keys(store)) if (!k.startsWith('pwl.')) store.removeItem(k);
-    }
+    // Only the lab's own copy of the shop data is reset (see storage.ts).
+    clearShopStorage();
+    const store = shopLocalStorage();
     if (setup.dismissOverlays) {
-      localStorage.setItem('pp.cookieConsent', '"accepted"');
-      localStorage.setItem('pp.newsletterDismissed', 'true');
+      store.setItem('pp.cookieConsent', '"accepted"');
+      store.setItem('pp.newsletterDismissed', 'true');
     }
     if (setup.loggedInAs) {
-      localStorage.setItem('pp.session', JSON.stringify({ email: setup.loggedInAs, token: 'lab-session', expiresAt: Date.now() + 86_400_000 }));
+      store.setItem('pp.session', JSON.stringify({ email: setup.loggedInAs, token: 'lab-session', expiresAt: Date.now() + 86_400_000 }));
     }
-    if (setup.bugs && (setup.bugs === 'all' || setup.bugs.length)) localStorage.setItem('pp.bugs', JSON.stringify(setup.bugs));
-    for (const [k, v] of Object.entries(setup.storage ?? {})) localStorage.setItem(k, JSON.stringify(v));
+    if (setup.bugs && (setup.bugs === 'all' || setup.bugs.length)) store.setItem('pp.bugs', JSON.stringify(setup.bugs));
+    for (const [k, v] of Object.entries(setup.storage ?? {})) store.setItem(k, JSON.stringify(v));
   }
 
   // ----- running tests
@@ -650,9 +665,11 @@ export class Runtime {
     this.recorder.stop();
     this.running = true;
     this.abortRequested = false;
+    let finished!: () => void;
+    this.idle = new Promise((resolve) => (finished = resolve));
     this.calls = {};
     this.console = [];
-    const result: RunResult = { label, tests: [], calls: this.calls, duration: 0, status: 'running' };
+    const result: RunResult = { label, code, tests: [], calls: this.calls, duration: 0, status: 'running' };
     this.result = result;
     this.emit();
     const t0 = performance.now();
@@ -730,7 +747,23 @@ export class Runtime {
       this.currentTest = null;
       this.stepStack = [];
       this.emit();
+      finished();
     }
+  }
+
+  /**
+   * Starts over for a new lesson or the Sandbox: stops a running test, waits for it to finish,
+   * then clears the results and shows the app in the preview.
+   */
+  async open(setup: LabSetup, path = 'index.html') {
+    const opened = ++this.opened;
+    this.stop();
+    await this.idle;
+    if (opened !== this.opened) return; // another lesson was opened meanwhile
+    this.result = null;
+    this.console = [];
+    this.pickerResult = null;
+    this.explore(setup, path);
   }
 
   private async runTest(t: TestCase, setup: LabSetup, beforeAllError: { message: string; line?: number } | null) {

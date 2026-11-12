@@ -2,7 +2,6 @@ import { useState, useSyncExternalStore } from 'react';
 import { runtime, type StepResult, type TestResult } from '../engine/runtime';
 
 interface Props {
-  code: string;
   onGoToLine: (line: number) => void;
 }
 
@@ -14,7 +13,7 @@ function ms(n: number) {
   return n < 1000 ? `${Math.round(n)}ms` : `${(n / 1000).toFixed(1)}s`;
 }
 
-export function OutputPanel({ code, onGoToLine }: Props) {
+export function OutputPanel({ onGoToLine }: Props) {
   useSyncExternalStore(runtime.subscribe, runtime.getVersion);
   const [tab, setTab] = useState<'results' | 'console'>('results');
   const result = runtime.result;
@@ -38,10 +37,10 @@ export function OutputPanel({ code, onGoToLine }: Props) {
           <>
             {result.label && <p className="run-label">{result.label}</p>}
             {result.compileError && (
-              <ErrorBox message={result.compileError.message} line={result.compileError.line} code={code} onGoToLine={onGoToLine} />
+              <ErrorBox message={result.compileError.message} line={result.compileError.line} code={result.code} onGoToLine={onGoToLine} />
             )}
             {result.tests.map((t) => (
-              <TestView key={t.id} test={t} code={code} onGoToLine={onGoToLine} single={result.tests.length === 1} />
+              <TestView key={t.id} test={t} code={result.code} onGoToLine={onGoToLine} single={result.tests.length === 1} />
             ))}
           </>
         )}

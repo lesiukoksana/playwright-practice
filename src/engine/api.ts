@@ -4,6 +4,7 @@ import {
   deepActiveElement, describeElement, fullText, isChecked, isDisabled, isEditable, isVisible, normalizeWhiteSpace,
 } from './dom';
 import { ClosedError, LabError, TimeoutError } from './errors';
+import { shopLocalStorage } from './storage';
 import {
   click, dragAndDrop, fill, flushChange, hitTarget, moveMouseTo, newInputState, press, selectOptions, setFiles,
   typeText, type ClickOptions, type FilePayload, type InputState, type SelectValue,
@@ -1166,9 +1167,8 @@ export class ContextImpl extends Emitter {
     this._rt.note('Cookies are not used by the practice app; context.addCookies() did nothing.');
   }
   async storageState() {
-    const items = Object.keys(localStorage)
-      .filter((k) => !k.startsWith('pwl.'))
-      .map((name) => ({ name, value: localStorage.getItem(name) ?? '' }));
+    const store = shopLocalStorage();
+    const items = Object.keys(store).map((name) => ({ name, value: store.getItem(name) ?? '' }));
     return { cookies: [], origins: [{ origin: location.origin, localStorage: items }] };
   }
   async close() {

@@ -20,11 +20,16 @@ export function App() {
   const progress = useProgress();
   const lessonMatch = /^#\/lesson\/([\w-]+)/.exec(hash);
   const lesson = lessonMatch ? LESSONS.find((l) => l.id === lessonMatch[1]) ?? null : null;
-  const route = lesson ? 'lesson' : hash.startsWith('#/sandbox') ? 'sandbox' : hash.startsWith('#/reference') ? 'reference' : 'home';
+  const route = lesson
+    ? 'lesson'
+    : hash.startsWith('#/sandbox') ? 'sandbox'
+    : hash.startsWith('#/reference') ? 'reference'
+    : hash === '' || hash === '#' || hash === '#/' ? 'home'
+    : 'not-found';
   const done = progress.completed.filter((id) => LESSONS.some((l) => l.id === id)).length;
 
   useEffect(() => {
-    document.title = lesson ? `${lesson.title} · Playwright Practice Lab` : route === 'sandbox' ? 'Sandbox · Playwright Practice Lab' : route === 'reference' ? 'Reference · Playwright Practice Lab' : 'Playwright Practice Lab';
+    document.title = lesson ? `${lesson.title} · Playwright Practice Lab` : route === 'sandbox' ? 'Sandbox · Playwright Practice Lab' : route === 'reference' ? 'Reference · Playwright Practice Lab' : route === 'not-found' ? 'Page not found · Playwright Practice Lab' : 'Playwright Practice Lab';
   }, [lesson, route]);
 
   return (
@@ -45,7 +50,23 @@ export function App() {
         {route === 'sandbox' && <Workspace key="sandbox" lesson={null} />}
         {route === 'reference' && <Reference />}
         {route === 'home' && <Home />}
+        {route === 'not-found' && <NotFound lessonId={lessonMatch?.[1]} />}
       </main>
+    </div>
+  );
+}
+
+function NotFound({ lessonId }: { lessonId?: string }) {
+  return (
+    <div className="page not-found">
+      <h1>Page not found</h1>
+      <p className="lead">
+        {lessonId ? <>There's no lesson called <code>{lessonId}</code>. It may have been renamed.</> : <>There's no page at this address.</>}
+      </p>
+      <p className="hero-actions">
+        <a className="cta" href="#/">All lessons</a>
+        <a className="cta secondary" href="#/reference">Reference</a>
+      </p>
     </div>
   );
 }

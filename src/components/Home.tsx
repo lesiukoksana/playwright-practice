@@ -15,7 +15,7 @@ export function Home() {
           click through the app. Nothing to install.
         </p>
         <div className="hero-actions">
-          <a className="cta" href={`#/lesson/${nextLesson.id}`}>{done === 0 ? 'Start the course' : `Continue: ${nextLesson.title}`} →</a>
+          <a className="cta" href={`#/lesson/${nextLesson.id}`}>{done === 0 ? 'Start the course' : done === LESSONS.length ? 'Review the course' : `Continue: ${nextLesson.title}`} →</a>
           <a className="cta secondary" href="#/sandbox">Open the sandbox</a>
         </div>
         <div className="progress-line" aria-label={`${done} of ${LESSONS.length} lessons completed`}>
