@@ -10,7 +10,8 @@ test.describe('Home page', () => {
   });
 
   test('shows the page title and main heading', async ({ page }) => {
-    await expect(page).toHaveTitle('Playwright Practice Lab');
+    // Intentionally wrong to see a failing test in CI. Restore to 'Playwright Practice Lab'.
+    await expect(page).toHaveTitle('Playwright Practice Lab (broken)');
     await expect(homePage.heading).toBeVisible();
   });
 
